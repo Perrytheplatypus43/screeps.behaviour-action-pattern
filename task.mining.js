@@ -185,9 +185,11 @@ mod.checkForRequiredCreeps = (flag) => {
         if( DEBUG && TRACE ) trace('Task', {Task:mod.name, room:roomName, minerCount,
             minerTTLs: _.map(_.map(memory.running.remoteMiner, n=>Game.creeps[n]), "ticksToLive"), [mod.name]:'minerCount'});
 
+        const miner = mod.setupCreep(roomName, Task.mining.creep.miner);
+
         for(let i = minerCount; i < sourceCount; i++) {
             Task.spawn(
-                Task.mining.creep.miner, // creepDefinition
+                miner, // creepDefinition
                 { // destiny
                     task: mod.name, // taskName
                     targetName: flag.name, // targetName
@@ -195,7 +197,7 @@ mod.checkForRequiredCreeps = (flag) => {
                 }, 
                 { // spawn room selection params
                     targetRoom: roomName,
-                    minEnergyCapacity: 550,
+                    minEnergyCapacity: 550, // TODO calculate this
                     rangeRclRatio: 1,
                 },
                 creepSetup => { // onQueued callback
@@ -362,11 +364,40 @@ mod.creep = {
         queue: 'Low'
     }
 };
+mod.setupCreep = function(roomName, definition) {
+    switch (definition.behaviour) {
+        default:
+            return definition;
+
+        case 'remoteMiner':
+            let memory = Task.mining.memory(roomName);
+            if (!memory.harvestSize) {
+                return definition;
+            }
+
+            const isWork = function(b) {
+                return b === WORK;
+            };
+            const baseBody = _.reject(definition.fixedBody, isWork);
+            const workParts = _.sum(definition.fixedBody, isWork) + memory.harvestSize;
+
+            return _.create(definition, {
+                fixedBody: _.times(workParts, _.constant(WORK))
+                    .concat(_.times(Math.ceil(memory.harvestSize * 0.5), _.constant(MOVE)))
+                    .concat(baseBody),
+            })
+    }
+};
 mod.carry = function(roomName, partChange) {
     let memory = Task.mining.memory(roomName);
     memory.carryParts = (memory.carryParts || 0) + (partChange || 0);
     const population = Math.round(mod.carryPopulation(roomName) * 100);
     return `Task.${mod.name}: hauler carry capacity for ${roomName} ${memory.carryParts >= 0 ? 'increased' : 'decreased'} by ${Math.abs(memory.carryParts)}. Currently at ${population}% of desired capacity`;
+};
+mod.harvest = function(roomName, partChange) {
+    let memory = Task.mining.memory(roomName);
+    memory.harvestSize = (memory.harvestSize || 0) + (partChange || 0);
+    return `Task.${mod.name}: harvesting work capacity for ${roomName} ${memory.harvestSize >= 0 ? 'increased' : 'decreased'} by ${Math.abs(memory.harvestSize)} per miner.`;
 };
 mod.checkCapacity= function(roomName) {
     let checkRoomCapacity = function(roomName, minPopulation, maxDropped) {
