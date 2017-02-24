@@ -385,6 +385,7 @@ mod.setupCreep = function(roomName, definition) {
                 fixedBody: _.times(workParts, _.constant(WORK))
                     .concat(_.times(Math.ceil(memory.harvestSize * 0.5), _.constant(MOVE)))
                     .concat(baseBody),
+                moveBalance: (memory.harvestSize % 2) * -0.5,
             })
     }
 };
