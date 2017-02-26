@@ -1,0 +1,28 @@
+{
+ "ocs.internal": {
+    "reset": "upstream/dev",
+    "merge": [
+      "upstream/feature/healAlly",
+      "upstream/change/skRenewal",
+      "upstream/major/traveler",
+      "upstream/feature/remoteMinerHeal"
+    ]
+  },
+  "ocs.public": {
+    "reset": "upstream/dev",
+    "merge": [
+      "upstream/change/miningReservers",
+      "upstream/change/renewalForAll",
+      "upstream/feature/rcl8Structures",
+      "upstream/feature/harvestCapacity",
+      "upstream/feature/processPower",
+      "upstream/change/fleeHeal",
+      "upstream/change/travelHop",
+      "upstream/change/pioneerAnyRoom",
+      "upstream/change/smaterWorkerCount",
+      "upstream/major/traveler",
+      "upstream/hotfix/robbingRecycle",
+      "upstream/change/noSelfTarget"
+    ]
+  }
+}
