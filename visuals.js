@@ -56,6 +56,9 @@ module.exports = class Visuals {
 			if (VISUALS.TERMINAL) {
 				Visuals.terminal(room);
 			}
+			if (VISUALS.TOWER) {
+				Visuals.tower(room);
+			}
 			if (VISUALS.TRANSACTIONS) {
 				Visuals.drawTransactions(room);
 			}
@@ -296,6 +299,15 @@ module.exports = class Visuals {
 			storageObject(vis, room.terminal.store, x, y);
 		}
 	}
+	
+	static tower(room) {
+		if (room.tower) {
+			const vis = new RoomVisual(room.name);
+			const x = 63;
+			let y = 4.5;
+			vis.text(`Tower energy ${room.tower.energy}`, x, ++y, {align: 'left'});
+		}
+	}	
 	
 	static drawTransactions(room) {
 		if (room.terminal) {
