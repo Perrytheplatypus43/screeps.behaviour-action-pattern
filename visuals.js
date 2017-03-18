@@ -35,7 +35,7 @@ module.exports = class Visuals {
 				room.structures.spawns.filter(s => s.spawning).forEach(s => Visuals.drawSpawnInfo(s));
 			}
 			if (VISUALS.TIME_TO_LIVE) {
-				room.structures.creeps.filter(s => s.tickToLive  > MINIMUM_TIME_TO_LIVE).forEach(s => Visuals.drawSpawnInfo(s));
+				room.structures.creeps.filter(s => s.tickToLive  > MINIMUM_TIME_TO_LIVE).forEach(s => Visuals.timeTolive(s));
 			}
 			if (VISUALS.MINERAL) {
 				let [mineral] = room.minerals;
