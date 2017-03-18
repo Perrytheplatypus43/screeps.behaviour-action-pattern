@@ -35,7 +35,7 @@ module.exports = class Visuals {
 				room.structures.spawns.filter(s => s.spawning).forEach(s => Visuals.drawSpawnInfo(s));
 			}
 			if (VISUALS.TIME_TO_LIVE) {
-				room.structures.creeps.filter(s => s.tickToLive  < 30).forEach(s => Visuals.drawSpawnInfo(s));
+				room.structures.creeps.filter(s => s.tickToLive  > MINIMUM_TIME_TO_LIVE).forEach(s => Visuals.drawSpawnInfo(s));
 			}
 			if (VISUALS.MINERAL) {
 				let [mineral] = room.minerals;
@@ -166,6 +166,12 @@ module.exports = class Visuals {
 		if (!spawn.spawning) return;
 		const vis = new RoomVisual(spawn.room.name);
 		vis.text(`${spawn.spawning.name} (${((spawn.spawning.needTime - spawn.spawning.remainingTime) / spawn.spawning.needTime * 100).toFixed(1)}%)`, spawn.pos.x + 1, spawn.pos.y - 0.5, {align: 'left', size: 0.4,});
+	}
+	
+	static timeTolive(creepLive) {
+		if (tickToLive  < MINIMUM_TIME_TO_LIVE) return;
+		const vis = new RoomVisual(creepLive.room.name);
+		vis.text(`Time to live for ${spawn.name}: ${spawn.tickToLive}`, creep.pos.x + 1, creep.pos.y - 0.5, {align: 'left', size: 0.4,});
 	}
 	
 	static drawMineralInfo(mineral) {
@@ -391,7 +397,6 @@ module.exports = class Visuals {
 			room.memory.heatmap[key]++;
 		});
 	}
-	
 	static drawHeatMapData(room) {
 		const vis = new RoomVisual(room.name);
 		const data = Object.keys(room.memory.heatmap).map(k => {
