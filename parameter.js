@@ -33,6 +33,7 @@ let mod = {
         MINERAL: true, // displays mineral amount, or ticks to regen
         SOURCE: true, // displays energy amount, or ticks to regen
         CREEP: true, // draws creep paths
+        TIME_TO_LIVE: true, // display time to live for a creep if it is going to die in < 15 ticks
         WALL: false, // highlight weakest wall and display hits
         RAMPART: false, // highlight weakest rampart and display hits
         ROAD: false, // highlight weakest road and display hits
