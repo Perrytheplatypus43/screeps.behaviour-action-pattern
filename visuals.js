@@ -170,7 +170,7 @@ module.exports = class Visuals {
 	
 	static timeTolive(creepLive) {
 		if (!tickToLive  < MINIMUM_TIME_TO_LIVE) return;
-		const vis = new RoomVisual(creepLive.room.name);
+		const vis = new RoomVisual(creepLive.room.name + 'energy');
 		vis.text(`Time to live for ${spawn.name}: ${spawn.tickToLive}`, creep.pos.x + 1, creep.pos.y - 0.5, {align: 'left', size: 0.4,});
 	}
 	
